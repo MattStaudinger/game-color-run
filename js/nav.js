@@ -1,15 +1,3 @@
-function startGame() {
-  document.getElementById("start-button").style = "display: none";
-  document.getElementById("nav-btn").style = "display: none";
-  canvas.style = "margin-top: 20px;"
-  document.querySelector("body").append(canvas);
-
-  let intervalId = setInterval(() => {
-    update();
-    drawEverything();
-  }, 1000/60)
-};
-
 
 
 
@@ -27,6 +15,7 @@ $("[data-page=" + link + "]").show()
 })
 }
 
+
 $("a").click(function(event) {
 console.log($(this));
 event.preventDefault();
@@ -35,3 +24,8 @@ goToPage($(this).attr("href"))
 
 
 goToPage("home");
+
+
+document.getElementById("start-button").onclick = function() {
+  startGame();
+}
