@@ -7,22 +7,31 @@ class Obstacle {
     this.speed = 2;
     this.width = this.ctx.canvas.width;
     this.height = 50; // Height of the Bricks
-    this.brickLines = [
-      {
-        x: [],
-        y: [],
-        width: [],
-        height: [],
-        color: []
-      }
-    ];
+    this.brickLines = [];
     this.nbOfBricks = 0;
+    this.whichLine = 0;
+    this.scrollAmount = 0;
+    this.rowGapHeight = 300;
+    this.isNewRow = false;
   }
 
-  createBrickLine() {
+  createBrickLine(lineNumber) {
+
+
+    if (this.whichLine > lineNumber) return;
+
+    var index = lineNumber;
     var isTooWide = false;
     var brickWidth = [];
     var width = this.width;
+
+    this.brickLines[index] = {
+      x: [],
+      y: [],
+      widthBrick: [],
+      height: [],
+      color: []
+    };
 
     this.nbOfBricks = Math.floor(Math.random() * 5 + 4); //Maximum amount of bricks per line: 6
     for (var i = 0; i < this.nbOfBricks; i++) {
@@ -32,50 +41,70 @@ class Obstacle {
         brickWidth[i] = Math.floor(Math.random() * (width / 2) + 100);
         if (brickWidth[i] > 600) brickWidth[i] = 550; //in case the first random number is over 600
         if (width - brickWidth[i] < 100) {
-          //If width of brick is smaller than the ball, the next iteration will stop
+                                            //If width of brick is smaller than the ball, the next iteration will stop
           brickWidth[i] = width; //and brickwiWidth[i] will get the whole rest width
           isTooWide = true;
         } else width -= brickWidth[i];
       }
 
-      if (i === 0) this.brickLines[0].x.push(0);
-      else
-        this.brickLines[0].x.push(
+      if (i === 0) this.brickLines[index].x.push(0);
+      else {
+        this.brickLines[index].x.push(
           brickWidth.reduce((acc, el) => {
             return acc + el;
           }, 0) - brickWidth[i]
         );
-      this.brickLines[0].y.push(this.y);
-      this.brickLines[0].width.push(brickWidth[i]);
-      this.brickLines[0].height.push(this.height);
-      this.brickLines[0].color.push(this.randomColor());
+        }
+      this.brickLines[index].y.push(this.y);
+      this.brickLines[index].widthBrick.push(brickWidth[i]);
+      this.brickLines[index].height.push(this.height);
+      this.brickLines[index].color.push(this.randomColor());
+    
+      if (isTooWide) {
+        this.nbOfBricks = i;
+        isTooWide = false;
+  }
+   
+      //i = this.nbOfBricks;
     }
-    if (isTooWide) {
-      this.nbOfBricks = i + 1;
-      isTooWide = false;
-      i = this.nbOfBricks;
-    }
+    this.whichLine++;
   }
 
   draw() {
-    for (var i = 0; i < this.nbOfBricks; i++) {
-      this.ctx.save();
-      this.ctx.fillStyle = this.brickLines[0].color[i];
-      this.ctx.shadowBlur = 5;
-      this.ctx.shadowColor = "black";
-      this.ctx.fillRect(
-        this.brickLines[0].x[i],
-        this.brickLines[0].y[i],
-        this.brickLines[0].width[i],
-        this.brickLines[0].height[i]
-      );
-      this.ctx.restore();
+    if (this.isNewRow || this.whichLine === 0)
+      this.createBrickLine(this.whichLine);
+
+    for (let brickRow = 0; brickRow < this.whichLine; brickRow++) {
+      for (var i = 0; i < this.brickLines[brickRow].x.length; i++) {
+        this.ctx.save();
+        this.ctx.fillStyle = this.brickLines[brickRow].color[i];
+        this.ctx.shadowBlur = 5;
+        this.ctx.shadowColor = "black";
+        this.ctx.fillRect(
+          this.brickLines[brickRow].x[i],
+          this.brickLines[brickRow].y[i],
+          this.brickLines[brickRow].widthBrick[i],
+          this.brickLines[brickRow].height[i]
+        );
+        this.ctx.restore();
+      }
     }
   }
 
   update() {
-    for (let i = 0; i < this.brickLines[0].y.length; i++) {
-      this.brickLines[0].y[i] -= this.speed;
+    for (let brickRows = 0; brickRows < this.whichLine; brickRows++) {
+      for (let i = 0; i < this.brickLines[brickRows].y.length; i++) {
+        this.brickLines[brickRows].y[i] -= this.speed;
+       // console.log(this.isNewRow)
+        
+      }
+    }
+    if (this.scrollAmount >= this.rowGapHeight) {
+      this.scrollAmount = 0;
+      this.isNewRow = true;
+    } else {
+      this.scrollAmount += this.speed;
+      this.isNewRow = false;
     }
   }
 
@@ -87,6 +116,8 @@ class Obstacle {
     var colBlue = "#2C8693";
 
     var colorPicker = Math.floor(Math.random() * 5);
+    console.log("Color Picker", colorPicker);
+    console.log("this.color", this.color);
 
     switch (colorPicker) {
       case 0:
@@ -94,38 +125,39 @@ class Obstacle {
           this.color = colGreen;
         } else {
           this.color = colOrange;
-          break;
         }
+        break;
       case 1:
         if (this.color === colGreen) {
           this.color = colYellow;
-          return colYellow;
         } else {
           this.color = colGreen;
-          return colGreen;
-          break;
         }
+        break;
+
       case 2:
         if (this.color === colYellow) {
           this.color = colRed;
         } else {
           this.color = colYellow;
-          break;
         }
+        break;
+
       case 3:
         if (this.color === colRed) {
           this.color = colBlue;
         } else {
           this.color = colRed;
-          break;
         }
+        break;
+
       case 4:
         if (this.color === colBlue) {
           this.color = colOrange;
         } else {
           this.color = colBlue;
-          break;
         }
+        break;
     }
     return this.color;
   }

@@ -14,7 +14,7 @@ var obstacle1 = new Obstacle(ctx);
 function startGame (){
   document.getElementById("nav-btn").style = "display: none";
   canvas.style = "margin-top: 20px;"
-  obstacle1.createBrickLine();
+  // obstacle1.createBrickLine(1);
 
   // for (let i= 0; i<200; i++) {
   //   console.log(obstacle1.randomColor());
@@ -48,11 +48,9 @@ obstacle1.draw();
     switch (event.key) {
       case "ArrowRight":
       p1.movement = "right";
-
       break;
       case "ArrowLeft":
       p1.movement = "left";
-
       break;
       case "ArrowTop":
       break;
@@ -75,7 +73,6 @@ obstacle1.draw();
       case "ArrowDown":
       p1.movement = null;
       break;
-
       case " ":
       //p1.movement = null;
       p1.justJumped = true;
