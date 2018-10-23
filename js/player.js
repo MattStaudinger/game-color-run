@@ -1,7 +1,7 @@
 class Player {
   constructor(ctx, url) {
     this.ctx = ctx;
-    this.radius = 50;
+    this.radius = 30;
     this.x = 100;
     this.y = this.ctx.canvas.height / 2 - this.radius + 2;
     this.movement = null;
@@ -37,11 +37,11 @@ class Player {
 
   changeColor(brickLine) {
     if (this.isNewLine) {
-      var randomIndex = Math.floor(Math.random() * brickLine.color.length);
+      //var randomIndex = Math.floor(Math.random() * brickLine.color.length);
       this.isNewLine = false;
-      this.color = brickLine.color[randomIndex];
-      
-    }
+     // this.color = brickLine.color[randomIndex];
+     this.color = "#2C8693";
+        }
   }
 
   checkWhereSameBrick(brickLine) {
@@ -115,13 +115,13 @@ class Player {
       case "right":
         delta = 1;
         this.angle += Math.PI / 24;
-        this.speedX = 20;
+        this.speedX = 14;
         break;
 
       case "left":
         delta = -1;
         this.angle -= Math.PI / 24;
-        this.speedX = 20;
+        this.speedX = 14;
         break;
 
       case "jump":

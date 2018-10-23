@@ -2,16 +2,16 @@ class Obstacle {
   constructor(ctx) {
     this.ctx = ctx;
     this.x = 0;
-    this.y = this.ctx.canvas.height/2;
+    this.y = this.ctx.canvas.height / 2;
     this.color = "black";
     this.speed = bg.speed;
     this.width = this.ctx.canvas.width;
-    this.height = 50; // Height of the Bricks
+    this.height = 30; // Height of the Bricks
     this.brickLines = [];
     this.nbOfBricks = 0;
     this.whichLine = 0;
     this.scrollAmount = 0;
-    this.rowGapHeight = 250;
+    this.rowGapHeight = 175;
     this.isNewRow = false;
   }
 
@@ -26,7 +26,7 @@ class Obstacle {
       y: [],
       widthBrick: [],
       height: [],
-      color: [],
+      color: []
     };
 
     // delete Brick-Line which is out of the canvas
@@ -45,7 +45,8 @@ class Obstacle {
       } else {
         brickWidth[i] = Math.floor(Math.random() * (width / 2) + 100);
         if (brickWidth[i] > 600) brickWidth[i] = 550; //in case the first random number is over 600
-        if (width - brickWidth[i] < 100) {//If width of brick is smaller than the ball, the next iteration will stop
+        if (width - brickWidth[i] < 100) {
+          //If width of brick is smaller than the ball, the next iteration will stop
           brickWidth[i] = width; //and brickwiWidth[i] will get the whole rest width
           isTooWide = true;
         } else width -= brickWidth[i];
@@ -63,20 +64,29 @@ class Obstacle {
       this.brickLines[index].height.push(this.height);
       this.brickLines[index].color.push(this.randomColor());
 
+      
+
       if (isTooWide) {
         this.nbOfBricks = i;
         isTooWide = false;
       }
     }
+
+    var colorOfPlayerIndex = Math.floor(Math.random()*this.brickLines[index].color.length);
+    this.brickLines[index].color[colorOfPlayerIndex] = p1.color;
     this.whichLine++;
   }
 
   draw() {
-    if (this.isNewRow)  this.createBrickLine(this.whichLine, this.ctx.canvas.height);
-      if (this.whichLine === 0){
-        this.createBrickLine(this.whichLine, this.ctx.canvas.height/2)
-        this.createBrickLine(this.whichLine, this.ctx.canvas.height/2+this.rowGapHeight+50)
-      }
+    if (this.isNewRow)
+      this.createBrickLine(this.whichLine, this.ctx.canvas.height);
+    if (this.whichLine === 0) {
+      this.createBrickLine(this.whichLine, this.ctx.canvas.height / 2);
+      this.createBrickLine(
+        this.whichLine,
+        this.ctx.canvas.height / 2 + this.rowGapHeight + 50
+      );
+    }
 
     for (let brickRow = 0; brickRow < this.whichLine; brickRow++) {
       for (var i = 0; i < this.brickLines[brickRow].x.length; i++) {
@@ -119,7 +129,7 @@ class Obstacle {
     var colBlue = "#2C8693";
 
     var colorPicker = Math.floor(Math.random() * 5);
-    
+
     switch (colorPicker) {
       case 0:
         if (this.color === colOrange) {

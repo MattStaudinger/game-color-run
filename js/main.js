@@ -13,15 +13,15 @@ function startGame() {
   document.getElementById("nav-btn").style = "display: none";
   canvas.style = "margin-top: 20px;";
   obstacle1.draw();
-  p1.color = obstacle1.brickLines[0].color[Math.floor(Math.random()*obstacle1.brickLines[0].color.length)]
+  p1.color =
+    obstacle1.brickLines[0].color[
+      Math.floor(Math.random() * obstacle1.brickLines[0].color.length)
+    ];
   document.querySelector("body").append(canvas);
   requestAnimationFrame(interval);
 }
 
-
-
 function interval() {
-  
   update();
   drawEverything();
   if (p1.stop) return;
@@ -57,9 +57,6 @@ document.onkeydown = event => {
     case "Enter":
       startGame();
       break;
-    case " ":
-      p1.movement = "jump";
-      p1.justJumped = false;
   }
 };
 
@@ -72,9 +69,5 @@ document.onkeyup = event => {
     case "ArrowDown":
       p1.movement = null;
       break;
-    case " ":
-      //p1.movement = null;
-      p1.justJumped = true;
-      p1.movement = "down";
   }
 };

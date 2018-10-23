@@ -12,8 +12,8 @@ class Background {
 
   update() {
     if (p1.y > this.ctx.canvas.height / 3 + 100) {
-      this.speed = 50;
-    } else this.speed = 1;
+      this.speed = 20;
+    } else this.speed = 3;
     this.y -= this.speed;
   }
   draw() {
