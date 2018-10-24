@@ -21,22 +21,16 @@ class Obstacle {
     var brickWidth = [];
     var width = this.width;
 
-    this.brickLines[index] = {
+    this.brickLines.push( {
       x: [],
       y: [],
       widthBrick: [],
       height: [],
       color: []
-    };
+    });
 
     // delete Brick-Line which is out of the canvas
-    // for (let line = 0; line < this.whichLine - 1; line++) {
-    //   if (this.whichLine > 0 && this.brickLines[line].y[0] + this.height < -500) {
-    //     this.brickLines.shift();
-    //     this.whichLine--;
-    //     index = lineNumber - 1;
-    //   }
-    // }
+    
 
     this.nbOfBricks = Math.floor(Math.random() * 5 + 4); //Maximum amount of bricks per line: 6
     for (var i = 0; i < this.nbOfBricks; i++) {
@@ -118,6 +112,10 @@ class Obstacle {
     } else {
       this.scrollAmount += this.speed;
       this.isNewRow = false;
+    }
+
+    if (this.brickLines.length > 0 && this.brickLines[0].y[0] < 0) {
+      this.brickLines.shift()
     }
   }
 

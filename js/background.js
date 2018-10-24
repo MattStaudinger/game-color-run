@@ -11,18 +11,14 @@ class Background {
   }
 
   update() {
-    if (p1.y > this.ctx.canvas.height / 3 + 100) {
-      this.speed = 20;
-    } else this.speed = 3;
+    // if (p1.y > this.ctx.canvas.height / 3 + 100) {
+    //   this.speed = 2;
+    // } else this.speed = 3;
     this.y -= this.speed;
   }
   draw() {
     this.ctx.save();
-    for (
-      var i = 0;
-      this.y + i * this.img.height < this.ctx.canvas.height;
-      i++
-    ) {
+    for (var i = 0; this.y + i * this.img.height < this.ctx.canvas.height; i++) {
       this.ctx.drawImage(
         this.img,
         0,
