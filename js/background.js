@@ -2,7 +2,7 @@ class Background {
   constructor(ctx, url) {
     this.ctx = ctx;
     this.img = new Image();
-    this.speed = 2;
+    this.speed = 3;
     this.y = 0;
     // this.img.onload = this.draw();
     this.img.src = url;
@@ -11,9 +11,10 @@ class Background {
   }
 
   update() {
-    // if (p1.y > this.ctx.canvas.height / 3 + 100) {
-    //   this.speed = 2;
-    // } else this.speed = 3;
+    //  if (p1.y+p1.radius > this.ctx.canvas.height / 2 + 100) {
+    //     this.speed = 20;
+    //   } else this.speed = 2;
+
     this.y -= this.speed;
   }
   draw() {

@@ -1,12 +1,12 @@
 class Brick{
-  constructor(ctx, x,y,width,height,color, speed){
+  constructor(ctx, x,y,width,height,color){
     this.ctx = ctx;
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = width;
     this.color = color;
-    this.speed = speed;
+    this.speed = bg.speed;
   }
   draw() {
     this.ctx.save();
@@ -21,6 +21,6 @@ class Brick{
 
   }
   update() {
-    this.y -= this.speed // speed of all bricks
+    this.y -= bg.speed // speed of all bricks
   }
 }
