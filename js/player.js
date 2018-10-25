@@ -31,7 +31,7 @@ class Player {
 
   checkBoundaries() {
     // to fix a "bug" where the player is stuck because he moved too fast in between bricks
-    if (this.isFalling && this.fallingCounter < 30) {
+    if (this.isFalling && this.fallingCounter < 21) {
       this.fallingCounter++;
       return;
     } else {
