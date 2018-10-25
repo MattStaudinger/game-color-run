@@ -9,6 +9,7 @@ class Chronometer {
     this.seconds = 0;
     this.minutes = 0;
     this.countdown = 0;
+    this.currentTimeCountdown = 0;
   }
 
   startClick() {
@@ -26,9 +27,17 @@ class Chronometer {
   setCountdown(seconds) {
     this.countdown = seconds
     setInterval(() => {
-      this.countdown--;
-      timerText.innerText = "Time until next level:" +  this.twoDigitsNumber(this.countdown)
-    }, 1000);  
+      this.currentTimeCountdown++
+      if (Number.isInteger((this.currentTimeCountdown / 1000))) {
+        this.countdown--;
+        timerText.innerText = "Time until next level:" +  this.twoDigitsNumber(this.countdown)
+      }
+
+     
+      if (this.currentTimeCountdown === seconds*100) {
+        this.countdown = seconds;
+      }
+    }, 1);  
   }
 
   setMinutes() {

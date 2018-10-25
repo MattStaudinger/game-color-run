@@ -8,6 +8,7 @@ var width = canvas.width;
 var canvasHeight = canvas.height;
 var obstacles = [];
 var scrollAmount = 0;
+var secondsUntilNewLevel = 10;
 //var enemies = [];
 
 var bg = new Background(ctx, "../images/bg09.jpg");
@@ -21,9 +22,8 @@ var time = new Chronometer();
 
  function startGame() {
 time.startClick();
-time.setCountdown(10);
+time.setCountdown(secondsUntilNewLevel);
   document.getElementById("nav-btn").style = "display: none";
-  canvas.style = "margin-top: 20px;";
   document.getElementById("playfield").append(canvas);
   scrollAmount = 300;
   obstacleCreation(canvasHeight / 2);
@@ -44,8 +44,8 @@ function interval() {
 
 function update() {
   scrollAmount += bg.speed;
-  if (time.seconds > 10) bg.speed = 8;
-  bg.update();
+ // if (Number.isInteger((time.currentTimeCountdown / 1000*2))) bg.speed++;;
+  //bg.update();
   obstacles.forEach(el => {
     el.update();
   });
@@ -115,9 +115,11 @@ function obstacleCreation(obstacleY) {
   var brickWidth = [];
   var isTooWide = false;
   var brickHeight = 30;
-  var obstaclesGapHeight = 250;
+ var obstaclesGapHeight = 250;
   var obstaclesOverCanvasIndex = 0;
   var isNewLine = false;
+
+  // obstaclesGapHeight = Math.floor(Math.random()*750+100)
 
   //check if new Line needs to be created
   if (scrollAmount > obstaclesGapHeight) {
@@ -219,7 +221,7 @@ function randomColor() {
   var colRed = "#B64926";
   var colYellow = "#FFF0A5";
   var colGreen = "#9FBCA9";
-  var colBlue = "#E4847F";
+  var colBlue = "#2C8693";
   var color;
   var colorPicker = Math.floor(Math.random() * 5);
 

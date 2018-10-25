@@ -2,10 +2,11 @@ class Background {
   constructor(ctx, url) {
     this.ctx = ctx;
     this.img = new Image();
+    this.img.style.opacity = "0.5"
     this.speed = 3;
     this.y = 0;
-    // this.img.onload = this.draw();
-    this.img.src = url;
+   //  this.img.onload = function() {
+    this.img.src = url;//};
     this.height = this.img.height;
     this.width = this.ctx.canvas.width;
   }
