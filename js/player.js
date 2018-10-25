@@ -89,12 +89,12 @@ class Player {
     switch (this.movement) {
       case "right":
         this.delta = 1;
-        this.speedX = 10;
+        this.speedX = 5;
         break;
 
       case "left":
         this.delta = -1;
-        this.speedX = 10;
+        this.speedX = 5;
         break;
     }
 

@@ -3,13 +3,14 @@ ctx = canvas.getContext("2d");
 var timer = document.getElementById("timerSec");
 var timerText = document.getElementById("timerText");
 var startButton = document.getElementById("start-button");
+var playerButton = document.getElementById("player-btn");
 canvas.setAttribute("width", "1200");
 canvas.setAttribute("height", "800");
 var width = canvas.width;
 var canvasHeight = canvas.height;
 var obstacles = [];
 var scrollAmount = 0;
-var secondsUntilNewLevel = 10;
+var secondsUntilNewLevel = 6;
 var gameStop = true;
 var brickHeight = 30;
 var seconds = 0;
@@ -33,17 +34,22 @@ function resetEverything() {
   bg.reset();
   obstacles = [];
   scrollAmount = 0;
-  secondsUntilNewLevel = 10;
+  secondsUntilNewLevel = 6;
   brickHeight = 30;
   gameStop = true;
-  bg.speed = 3;
+  bg.speed = 0.75;
   seconds = 0;
   minutes = 0;
   milSec = 0;
   currentSecond = 0;
   currenCountdownSecond = 0;
   currentInterval = 0;
-  level = 0;
+  level = 1;
+}
+
+
+playerButton.onclick = function() {
+  
 }
 
 startButton.onclick = function() {
@@ -53,12 +59,15 @@ startButton.onclick = function() {
   }
 
   if (gameStop) {
+    startButton.style.display = "block";
     startGame();
     gameStop = false;
   }
 };
 
 function startGame() {
+  startButton.parentElement.style.display = "none";
+  playerButton.parentElement.style.display = "none";
   timer.style.display = "block";
   timerText.style.display = "block";
   document.getElementById("playfield").style.flexDirection = "row";
@@ -71,42 +80,60 @@ function startGame() {
   scrollAmount = 300;
   obstacleCreation((canvasHeight / 4) * 3 + 200);
   var mainDate = new Date();
-  var dateStaticForCountdownInterval = new Date()
+  var dateStaticForCountdownInterval = new Date();
   intervalID = setInterval(() => {
     update();
     drawEverything();
     if (p1.stop) {
       clearInterval(intervalID);
       gameStop = false;
+      startButton.parentElement.style.display = "block";
       p1.stop = false;
     }
 
-  
+    var dateInterval = new Date();
+    var dateIntervalForCountdown = new Date();
 
-      var dateInterval = new Date()
-      var dateIntervalForCountdown = new Date();
+    if (
+      secondsUntilNewLevel +
+        dateStaticForCountdownInterval.getSeconds() -
+        dateIntervalForCountdown.getSeconds() +
+        2 ===
+      secondsUntilNewLevel
+    )
+      timerText.style.backgroundColor = "rgba(159, 188, 169, 0.527)";
 
-      if (secondsUntilNewLevel + dateStaticForCountdownInterval.getSeconds()- dateIntervalForCountdown.getSeconds() === 0) {
-        dateStaticForCountdownInterval = new Date();
-        dateIntervalForCountdown = new Date();
-      //  mainDate = new Date();
-        bg.speed += 0.4;
-        // timerText.style.background = "red";
-        level++;
-      } 
-  
-    timerText.innerText =
-      "Level: " +
+    if (
+      secondsUntilNewLevel +
+        dateStaticForCountdownInterval.getSeconds() -
+        dateIntervalForCountdown.getSeconds() ===
+      0
+    ) {
+      dateStaticForCountdownInterval = new Date();
+      dateIntervalForCountdown = new Date();
+      bg.speed += 0.4;
+      timerText.style.backgroundColor = "#B64926";
+
+      level++;
+    }
+
+    timerText.innerHTML =
+      '<h2 style="font-size:2em">LEVEL ' +
       level +
-      " " +
+      "</h2>" +
+      "<br></br>" +
       "Time until next Level: " +
-      twoDigitsNumber( secondsUntilNewLevel + dateStaticForCountdownInterval.getSeconds() - dateInterval.getSeconds()) +
+      twoDigitsNumber(
+        secondsUntilNewLevel +
+          dateStaticForCountdownInterval.getSeconds() -
+          dateInterval.getSeconds()
+      ) +
       " s";
-      
-    timer.innerText = convertToMinutesAndSeconds(dateInterval.getSeconds() - mainDate.getSeconds());
 
-
-  }, 1000 / 50);
+    timer.innerText = convertToMinutesAndSeconds(
+      dateInterval.getSeconds() - mainDate.getSeconds()
+    );
+  }, 1000 / 100);
 }
 
 function convertToMinutesAndSeconds(time) {
@@ -157,7 +184,7 @@ function drawEverything() {
 }
 
 document.onkeydown = event => {
-  event.preventDefault();
+  // event.preventDefault();
   switch (event.key) {
     case "ArrowRight":
       p1.movement = "right";
