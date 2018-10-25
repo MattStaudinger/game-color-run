@@ -2,6 +2,7 @@ var canvas = document.createElement("canvas");
 ctx = canvas.getContext("2d");
 var timer = document.getElementById("timerSec");
 var timerText = document.getElementById("timerText");
+var startButton = document.getElementById("start-button");
 canvas.setAttribute("width", "1200");
 canvas.setAttribute("height", "800");
 var width = canvas.width;
@@ -17,7 +18,7 @@ var milSec = 0;
 var currentSecond = 0;
 var currenCountdownSecond = 0;
 var currentInterval = 0;
-var level = 0;
+var level = 1;
 var intervalID;
 
 //var enemies = [];
@@ -25,7 +26,6 @@ var intervalID;
 var bg = new Background(ctx, "./images/bg09.jpg");
 var p1 = new Player(ctx);
 gameStop = true;
-
 
 function resetEverything() {
   ctx.clearRect(0, 0, width, canvasHeight);
@@ -38,19 +38,18 @@ function resetEverything() {
   gameStop = true;
   bg.speed = 3;
   seconds = 0;
- minutes = 0;
-milSec = 0;
-currentSecond = 0;
-currenCountdownSecond = 0;
-currentInterval = 0;
-level = 0;
+  minutes = 0;
+  milSec = 0;
+  currentSecond = 0;
+  currenCountdownSecond = 0;
+  currentInterval = 0;
+  level = 0;
 }
 
-
-document.getElementById("start-button").onclick = function() {
+startButton.onclick = function() {
   if (!gameStop) {
     resetEverything();
-    gameStop = true;    
+    gameStop = true;
   }
 
   if (gameStop) {
@@ -71,39 +70,41 @@ function startGame() {
   obstacleCreation((canvasHeight / 4) * 3);
   scrollAmount = 300;
   obstacleCreation((canvasHeight / 4) * 3 + 200);
-
+  var mainDate = new Date();
+  var dateStaticForCountdownInterval = new Date()
   intervalID = setInterval(() => {
     update();
     drawEverything();
     if (p1.stop) {
       clearInterval(intervalID);
-      gameStop = true;
+      gameStop = false;
       p1.stop = false;
-    } 
-    currentInterval++;
-var date = new Date();
-var secondsOfDate = date.getSeconds();
-
-
-
-    if ((currentInterval * 50) % 1000 === 0) {
-      currentSecond++;
-
-      if (currenCountdownSecond === secondsUntilNewLevel) {
-      bg.speed+= 0.4;
-      // timerText.style.background = "red";
-      level++
-      currenCountdownSecond = 0;
-       } else currenCountdownSecond++;
-
     }
-    timerText.innerText = "Level: " + level + " " + "Time until next Level: " +
-    twoDigitsNumber((secondsUntilNewLevel - currenCountdownSecond)) + " s"
-    timer.innerText = convertToMinutesAndSeconds(currentSecond);
 
-    if (secondsUntilNewLevel - currentSecond === 0) {
+  
 
-    }
+      var dateInterval = new Date()
+      var dateIntervalForCountdown = new Date();
+
+      if (secondsUntilNewLevel + dateStaticForCountdownInterval.getSeconds()- dateIntervalForCountdown.getSeconds() === 0) {
+        dateStaticForCountdownInterval = new Date();
+        dateIntervalForCountdown = new Date();
+      //  mainDate = new Date();
+        bg.speed += 0.4;
+        // timerText.style.background = "red";
+        level++;
+      } 
+  
+    timerText.innerText =
+      "Level: " +
+      level +
+      " " +
+      "Time until next Level: " +
+      twoDigitsNumber( secondsUntilNewLevel + dateStaticForCountdownInterval.getSeconds() - dateInterval.getSeconds()) +
+      " s";
+      
+    timer.innerText = convertToMinutesAndSeconds(dateInterval.getSeconds() - mainDate.getSeconds());
+
 
   }, 1000 / 50);
 }
