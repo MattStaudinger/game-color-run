@@ -91,6 +91,7 @@ var secondsOfDate = date.getSeconds();
 
       if (currenCountdownSecond === secondsUntilNewLevel) {
       bg.speed+= 0.4;
+      // timerText.style.background = "red";
       level++
       currenCountdownSecond = 0;
        } else currenCountdownSecond++;
