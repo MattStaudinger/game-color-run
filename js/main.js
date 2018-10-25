@@ -3,7 +3,10 @@ ctx = canvas.getContext("2d");
 var timer = document.getElementById("timerSec");
 var timerText = document.getElementById("timerText");
 var startButton = document.getElementById("start-button");
+// var playerButton = document.getElementById("player-btn");
 var playerButton = document.getElementById("player-btn");
+var stopButton = document.getElementById("stop-button");
+var inputForm = document.getElementById("input-player")
 canvas.setAttribute("width", "1200");
 canvas.setAttribute("height", "800");
 var width = canvas.width;
@@ -21,6 +24,7 @@ var currenCountdownSecond = 0;
 var currentInterval = 0;
 var level = 1;
 var intervalID;
+var playerAmount = 1;
 
 //var enemies = [];
 
@@ -45,34 +49,50 @@ function resetEverything() {
   currenCountdownSecond = 0;
   currentInterval = 0;
   level = 1;
+  var playerAmount = 1;
+
 }
 
 
-playerButton.onclick = function() {
-  
-}
+// playerButton.onclick = function() {
+//   playerButton.parentElement.style.display = "none"
+//   inputForm.style.display = "block"  
+
+
+// }
 
 startButton.onclick = function() {
+  // var playerAmount = inputForm.value;
+
+
   if (!gameStop) {
     resetEverything();
     gameStop = true;
+  
   }
 
   if (gameStop) {
     startButton.style.display = "block";
     startGame();
     gameStop = false;
+    
   }
 };
 
+stopButton.onclick = function() {
+  window.location.reload(true);
+}
+
 function startGame() {
+  stopButton.style.display = "block"
   startButton.parentElement.style.display = "none";
-  playerButton.parentElement.style.display = "none";
+  // playerButton.parentElement.style.display = "none";
   timer.style.display = "block";
   timerText.style.display = "block";
   document.getElementById("playfield").style.flexDirection = "row";
   document.getElementById("heading").style.display = "none";
   document.getElementById("playfield").append(canvas);
+  document.getElementById("img-controls").style.display = "none"
   scrollAmount = 300;
   obstacleCreation(canvasHeight / 2);
   scrollAmount = 300;
@@ -94,6 +114,7 @@ function startGame() {
     var dateInterval = new Date();
     var dateIntervalForCountdown = new Date();
 
+    //Changing color of Button
     if (
       secondsUntilNewLevel +
         dateStaticForCountdownInterval.getSeconds() -
@@ -102,6 +123,7 @@ function startGame() {
       secondsUntilNewLevel
     )
       timerText.style.backgroundColor = "rgba(159, 188, 169, 0.527)";
+
 
     if (
       secondsUntilNewLevel +
@@ -130,7 +152,7 @@ function startGame() {
       ) +
       " s";
 
-    timer.innerText = convertToMinutesAndSeconds(
+    timer.innerText = "TOTAL TIME "+ convertToMinutesAndSeconds(
       dateInterval.getSeconds() - mainDate.getSeconds()
     );
   }, 1000 / 100);
@@ -184,7 +206,7 @@ function drawEverything() {
 }
 
 document.onkeydown = event => {
-  // event.preventDefault();
+   event.preventDefault();
   switch (event.key) {
     case "ArrowRight":
       p1.movement = "right";
@@ -310,7 +332,7 @@ function obstacleCreation(obstacleY) {
 }
 
 function randomColor() {
-  colors = ["#FAB752", "#B64926", "#FFF0A5", "#9FBCA9", "#2C8693"];
+  colors = ["#FAB752", "#B64926", "#FFF0A5", "#9FBCA9", "#2C8693", "#EFCB9B"];
   var colorPicker = Math.floor(Math.random() * colors.length);
   return colors[colorPicker];
 }

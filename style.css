@@ -7,7 +7,6 @@ body h1 {
   text-transform: uppercase;
 }
 
-
 #playfield {
   display: flex;
   flex-direction: column;
@@ -16,60 +15,58 @@ body h1 {
   background-image: url("images/bg_Cover02.jpg");
   background-size: cover;
   height: 100vh;
-
 }
 
 #playfield h1 a {
   margin: 50px;
   font-size: 3em;
   text-align: center;
-  box-shadow: 5px 5px 10px 0  black;
-padding: 20px;
-border-radius: 10px;
-/* color: #FFF0A5 */
-text-decoration: none;
-color: black;
-
-
+  box-shadow: 5px 5px 10px 0 black;
+  padding: 20px;
+  border-radius: 10px;
+  /* color: #FFF0A5 */
+  text-decoration: none;
+  color: black;
 }
 
 .right-half {
   order: 1;
-  height: 300px;
+  align-self: center;
 }
 canvas {
   max-height: 90vh;
   max-width: 70%;
-  /* margin: auto; */
   margin-right: 10vw;
   border: 2px solid #eee;
   border-radius: 20px;
   opacity: 0.9;
-  margin: 50px;
-
+  margin: 70px;
 }
 
-
-.game-btn{
+.game-btn {
   color: black;
   font-size: 1.7em;
   text-align: center;
   border: 0.5px solid #eee;
+  margin: 0 auto;
   /* background-color: #EFCB9B; */
   border-radius: 20px;
   box-sizing: border-box;
-  box-shadow: 10px 10px 10px 0  rgba(0, 0, 0, 0.459);;
+  box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.459);
   /* margin: 50px 5% 0 5%; */
   padding: 20px;
   width: 200px;
   margin-bottom: 0px;
+  order: 1;
+}
+
+#stop-button {
+  display: none
 }
 
 .game-btn a {
   text-decoration: none;
   color: black;
-
-
 }
 
 #timerSec {
@@ -79,15 +76,12 @@ canvas {
   background-color: rgba(159, 188, 169, 0.527);
   border-radius: 20px;
   box-sizing: border-box;
-  box-shadow: 2px 2px 10px 0  #eee;
+  box-shadow: 2px 2px 10px 0 #eee;
   /* margin: 50px 5% 0 5%; */
   padding: 20px;
   margin: 20px 0;
   width: 200px;
   display: none;
-  
-  
-
 }
 
 #timerText {
@@ -97,17 +91,22 @@ canvas {
   background-color: rgba(159, 188, 169, 0.527);
   border-radius: 20px;
   box-sizing: border-box;
-  box-shadow: 2px 2px 10px 0  #eee;
+  box-shadow: 2px 2px 10px 0 #eee;
   /* margin: 50px 5% 0 5%; */
   padding: 20px;
   width: 200px;
   display: none;
-
 }
 
-
-#inputPlayer {
+#input-player {
   opacity: 0.75;
   font-size: 1em;
   display: none;
+}
+
+
+#img-controls {
+  margin-top: 50px;
+  display: block;
+  width: 20vw;
 }
