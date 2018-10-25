@@ -9,21 +9,61 @@ var canvasHeight = canvas.height;
 var obstacles = [];
 var scrollAmount = 0;
 var secondsUntilNewLevel = 10;
+var gameStop = true;
+var brickHeight = 30;
+var seconds = 0;
+var minutes = 0;
+var milSec = 0;
+var currentSecond = 0;
+var currenCountdownSecond = 0;
+var currentInterval = 0;
+var level = 0;
+var intervalID;
+
 //var enemies = [];
 
-var bg = new Background(ctx, "../images/bg09.jpg");
+var bg = new Background(ctx, "./images/bg09.jpg");
 var p1 = new Player(ctx);
-var time = new Chronometer();
-// var enemy = new Enemies(ctx);
+gameStop = true;
 
 
+function resetEverything() {
+  ctx.clearRect(0, 0, width, canvasHeight);
+  p1.reset();
+  bg.reset();
+  obstacles = [];
+  scrollAmount = 0;
+  secondsUntilNewLevel = 10;
+  brickHeight = 30;
+  gameStop = true;
+  bg.speed = 3;
+  seconds = 0;
+ minutes = 0;
+milSec = 0;
+currentSecond = 0;
+currenCountdownSecond = 0;
+currentInterval = 0;
+level = 0;
+}
 
 
+document.getElementById("start-button").onclick = function() {
+  if (!gameStop) {
+    resetEverything();
+    gameStop = true;    
+  }
 
- function startGame() {
-time.startClick();
-time.setCountdown(secondsUntilNewLevel);
-  document.getElementById("nav-btn").style = "display: none";
+  if (gameStop) {
+    startGame();
+    gameStop = false;
+  }
+};
+
+function startGame() {
+  timer.style.display = "block";
+  timerText.style.display = "block";
+  document.getElementById("playfield").style.flexDirection = "row";
+  document.getElementById("heading").style.display = "none";
   document.getElementById("playfield").append(canvas);
   scrollAmount = 300;
   obstacleCreation(canvasHeight / 2);
@@ -31,40 +71,78 @@ time.setCountdown(secondsUntilNewLevel);
   obstacleCreation((canvasHeight / 4) * 3);
   scrollAmount = 300;
   obstacleCreation((canvasHeight / 4) * 3 + 200);
-  requestAnimationFrame(interval);
+
+  intervalID = setInterval(() => {
+    update();
+    drawEverything();
+    if (p1.stop) {
+      clearInterval(intervalID);
+      gameStop = true;
+      p1.stop = false;
+    } 
+    currentInterval++;
+var date = new Date();
+var secondsOfDate = date.getSeconds();
+
+
+
+    if ((currentInterval * 50) % 1000 === 0) {
+      currentSecond++;
+
+      if (currenCountdownSecond === secondsUntilNewLevel) {
+      bg.speed+= 0.4;
+      level++
+      currenCountdownSecond = 0;
+       } else currenCountdownSecond++;
+
+    }
+    timerText.innerText = "Level: " + level + " " + "Time until next Level: " +
+    twoDigitsNumber((secondsUntilNewLevel - currenCountdownSecond)) + " s"
+    timer.innerText = convertToMinutesAndSeconds(currentSecond);
+
+    if (secondsUntilNewLevel - currentSecond === 0) {
+
+    }
+
+  }, 1000 / 50);
 }
 
-function interval() {
-  obstacleCreation(canvasHeight);
-  update();
-  drawEverything();
-  if (p1.stop) return;
-  requestAnimationFrame(interval);
+function convertToMinutesAndSeconds(time) {
+  minutes = parseInt(time / 60);
+  seconds = time % 60;
+  return twoDigitsNumber(minutes) + ":" + twoDigitsNumber(seconds);
+}
+
+function twoDigitsNumber(value) {
+  if (value < 10) {
+    return "0" + value;
+  } else return value.toString();
 }
 
 function update() {
+  obstacleCreation(canvasHeight);
+  //filter elements outside of the canvas
+  obstacles.filter(el => {
+    return el.y + brickHeight < 0 ? false : true;
+  });
+
   scrollAmount += bg.speed;
- // if (Number.isInteger((time.currentTimeCountdown / 1000*2))) bg.speed++;;
-  //bg.update();
   obstacles.forEach(el => {
     el.update();
   });
   p1.update();
-  if (p1.y > canvasHeight*0.7) {
-    moveTheCamera(6)
+  if (p1.y > canvasHeight * 0.7) {
+    moveTheCamera(6);
   }
-  // enemies.forEach(el => {
-  //   el.updateEnemy();
-  // });
 }
 
 function moveTheCamera(amount) {
-  p1.y-=amount
-  bg.y-=amount
+  p1.y -= amount;
+  bg.y -= amount;
   obstacles.forEach(el => {
-    el.y-=amount
+    el.y -= amount;
   });
-  scrollAmount+=amount
+  scrollAmount += amount;
 }
 
 function drawEverything() {
@@ -74,9 +152,6 @@ function drawEverything() {
     el.draw();
   });
   p1.draw();
-  // enemies.forEach(el => {
-  //   el.drawEnemy();
-  // });
 }
 
 document.onkeydown = event => {
@@ -91,9 +166,6 @@ document.onkeydown = event => {
     case "Enter":
       startGame();
       break;
-    case " " :
-    p1.movement = "boost"
-    break;
   }
 };
 
@@ -104,7 +176,6 @@ document.onkeyup = event => {
     case "ArrowLeft":
     case "ArrowTop":
     case "ArrowDown":
-    case " ":
       p1.movement = null;
       break;
   }
@@ -114,8 +185,7 @@ function obstacleCreation(obstacleY) {
   var widthOfLine = width;
   var brickWidth = [];
   var isTooWide = false;
-  var brickHeight = 30;
- var obstaclesGapHeight = 250;
+  var obstaclesGapHeight = 250;
   var obstaclesOverCanvasIndex = 0;
   var isNewLine = false;
 
@@ -126,14 +196,6 @@ function obstacleCreation(obstacleY) {
     isNewLine = true;
     scrollAmount = 0;
   } else isNewLine = false;
-
-  //old lines will be deleted
-  obstacles.forEach(el => {
-    if (el.y + brickHeight < 0) obstaclesOverCanvasIndex++;
-  });
-  for (let brickLine = 0; brickLine < obstaclesOverCanvasIndex; brickLine++) {
-    obstacles.shift();
-  }
 
   //the random width will be created and pushed inside the obstacles-array
   if (isNewLine) {
@@ -162,7 +224,8 @@ function obstacleCreation(obstacleY) {
             obstacleY,
             brickWidth[brickNo],
             brickHeight,
-            randomColor()          )
+            randomColor()
+          )
         );
       } else {
         obstacles.push(
@@ -174,7 +237,8 @@ function obstacleCreation(obstacleY) {
             obstacleY,
             brickWidth[brickNo],
             brickHeight,
-            randomColor()          )
+            randomColor()
+          )
         );
       }
 
@@ -206,66 +270,18 @@ function obstacleCreation(obstacleY) {
               obstacleY,
               brickWidth[brickNo],
               brickHeight,
-              p1.color            )
+              p1.color
+            )
           );
         }
       }
-     //enemies.push(new Enemies(ctx));
-
+      //enemies.push(new Enemies(ctx));
     }
   }
 }
 
 function randomColor() {
-  var colOrange = "#FAB752";
-  var colRed = "#B64926";
-  var colYellow = "#FFF0A5";
-  var colGreen = "#9FBCA9";
-  var colBlue = "#2C8693";
-  var color;
-  var colorPicker = Math.floor(Math.random() * 5);
-
-  switch (colorPicker) {
-    case 0:
-      if (color === colOrange) {
-        color = colGreen;
-      } else {
-        color = colOrange;
-      }
-      break;
-    case 1:
-      if (color === colGreen) {
-        color = colYellow;
-      } else {
-        color = colGreen;
-      }
-      break;
-
-    case 2:
-      if (color === colYellow) {
-        color = colRed;
-      } else {
-        color = colYellow;
-      }
-      break;
-
-    case 3:
-      if (color === colRed) {
-        color = colBlue;
-      } else {
-        color = colRed;
-      }
-      break;
-
-    case 4:
-      if (color === colBlue) {
-        color = colOrange;
-      } else {
-        color = colBlue;
-      }
-      break;
-  }
-  return color;
+  colors = ["#FAB752", "#B64926", "#FFF0A5", "#9FBCA9", "#2C8693"];
+  var colorPicker = Math.floor(Math.random() * colors.length);
+  return colors[colorPicker];
 }
-
-

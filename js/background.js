@@ -31,4 +31,11 @@ class Background {
       this.ctx.restore();
     }
   }
+
+  reset() {
+    this.speed = 3;
+    this.y = 0;
+    this.height = this.img.height;
+    this.width = this.ctx.canvas.width;
+  }
 }
