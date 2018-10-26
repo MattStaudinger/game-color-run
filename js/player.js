@@ -19,6 +19,7 @@ class Player {
 
   draw() {
     this.ctx.save();
+    this.ctx.globalAlpha=1;
     this.ctx.fillStyle = this.color;
     this.ctx.shadowBlur = 10;
     this.ctx.shadowColor = "black";
@@ -31,29 +32,31 @@ class Player {
 
   checkBoundaries() {
     // to fix a "bug" where the player is stuck because he moved too fast in between bricks
-    if (this.isFalling && this.fallingCounter < 23) {
+    if (this.isFalling && this.fallingCounter < 15) {
       this.fallingCounter++;
       return;
     } else {
       //Check for color
-      obstacles.forEach(el => {
+      for (let brick = 0; brick < obstacles.length; brick++) {
         if (
-          this.x >= el.x &&
-          this.x <= el.width + el.x &&
-          this.y + this.radius >= el.y &&
-          this.y <= el.height + el.y
+          this.x >= obstacles[brick].x &&
+          this.x <= obstacles[brick].width + obstacles[brick].x &&
+          this.y + this.radius >= obstacles[brick].y &&
+          this.y <= obstacles[brick].height + obstacles[brick].y
         ) {
           this.isFalling = false;
-          if (Object.values(el).indexOf(this.color) > -1) {
-            el.width = 0;
+          if (Object.values(obstacles[brick]).indexOf(this.color) > -1) {
             this.isFalling = true;
+            obstacles[brick].width = 0;
             this.fallingCounter = 0;
           }
          
           this.speedY = -bg.speed;
-          if (this.isFalling) this.speedY = 6;
+          if (this.isFalling) this.speedY = 4;
+          break;
+
         }
-      });
+      };
 
       //X-Coordinate
       if (this.x > this.width - this.radius - 12 && this.movement === "right")
@@ -63,6 +66,7 @@ class Player {
       //check for Game-Stop
       if (this.y - this.radius / 2 < 0) {
         this.stop = true;
+        console.log(this.isFalling)
       }
     }
   }

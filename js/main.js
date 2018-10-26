@@ -25,6 +25,7 @@ var currentInterval = 0;
 var level = 1;
 var intervalID;
 var playerAmount = 1;
+var isNewDate = true;
 
 //var enemies = [];
 
@@ -49,7 +50,9 @@ function resetEverything() {
   currenCountdownSecond = 0;
   currentInterval = 0;
   level = 1;
-  var playerAmount = 1;
+  playerAmount = 1;
+  isNewDate = true;
+
 
 }
 
@@ -101,6 +104,7 @@ function startGame() {
   obstacleCreation((canvasHeight / 4) * 3 + 200);
   var mainDate = new Date();
   var dateStaticForCountdownInterval = new Date();
+  var secondsInterval
   intervalID = setInterval(() => {
     update();
     drawEverything();
@@ -112,6 +116,7 @@ function startGame() {
     }
 
     var dateInterval = new Date();
+   // isNewDate ?  dateInterval.setSeconds(0) : isNewDate = false;
     var dateIntervalForCountdown = new Date();
 
     //Changing color of Button
@@ -134,8 +139,6 @@ function startGame() {
       dateStaticForCountdownInterval = new Date();
       dateIntervalForCountdown = new Date();
       bg.speed += 0.4;
-      timerText.style.backgroundColor = "#B64926";
-
       level++;
     }
 
@@ -148,12 +151,12 @@ function startGame() {
       twoDigitsNumber(
         secondsUntilNewLevel +
           dateStaticForCountdownInterval.getSeconds() -
-          dateInterval.getSeconds()
+          dateIntervalForCountdown.getSeconds()
       ) +
       " s";
 
     timer.innerText = "TOTAL TIME "+ convertToMinutesAndSeconds(
-      dateInterval.getSeconds() - mainDate.getSeconds()
+      dateInterval.getSeconds()  - mainDate.getSeconds()
     );
   }, 1000 / 100);
 }
@@ -173,9 +176,9 @@ function twoDigitsNumber(value) {
 function update() {
   obstacleCreation(canvasHeight);
   //filter elements outside of the canvas
-  obstacles.filter(el => {
-    return el.y + brickHeight < 0 ? false : true;
-  });
+  // obstacles.filter(el => {
+  //   return el.y + brickHeight < 0 ? false : true;
+  // });
 
   scrollAmount += bg.speed;
   obstacles.forEach(el => {
@@ -247,6 +250,15 @@ function obstacleCreation(obstacleY) {
     isNewLine = true;
     scrollAmount = 0;
   } else isNewLine = false;
+
+
+  //old lines will be deleted
+  obstacles.forEach(el => {
+    if (el.y + brickHeight < 0) obstaclesOverCanvasIndex++;
+  });
+  for (let brickLine = 0; brickLine < obstaclesOverCanvasIndex; brickLine++) {
+    obstacles.shift();
+  }
 
   //the random width will be created and pushed inside the obstacles-array
   if (isNewLine) {

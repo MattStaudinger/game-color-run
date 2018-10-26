@@ -19,17 +19,17 @@ class Background {
     this.y -= this.speed;
   }
   draw() {
-    this.ctx.save();
-    for (var i = 0; this.y + i * this.img.height < this.ctx.canvas.height; i++) {
-      this.ctx.drawImage(
-        this.img,
-        0,
-        this.y + i * this.img.height,
-        this.width,
-        this.img.height
-      );
-      this.ctx.restore();
-    }
+    // this.ctx.save();
+    // for (var i = 0; this.y + i * this.img.height < this.ctx.canvas.height; i++) {      
+    //   this.ctx.drawImage(
+    //     this.img,
+    //     0,
+    //     this.y + i * this.img.height,
+    //     this.width,
+    //     this.img.height
+    //   );
+    //   this.ctx.restore();
+    // }
   }
 
   reset() {

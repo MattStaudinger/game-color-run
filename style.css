@@ -34,13 +34,13 @@ body h1 {
   align-self: center;
 }
 canvas {
-  max-height: 90vh;
-  max-width: 70%;
+  max-height: 85vh;
+  max-width: 65%;
   margin-right: 10vw;
-  border: 2px solid #eee;
   border-radius: 20px;
-  opacity: 0.9;
   margin: 70px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.459);
 }
 
 .game-btn {
@@ -52,7 +52,7 @@ canvas {
   /* background-color: #EFCB9B; */
   border-radius: 20px;
   box-sizing: border-box;
-  box-shadow: 10px 10px 10px 0 rgba(0, 0, 0, 0.459);
+  box-shadow: 10px 10px 10px  rgba(0, 0, 0, 0.459);
   /* margin: 50px 5% 0 5%; */
   padding: 20px;
   width: 200px;

@@ -1,48 +1,49 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Color-Run</title>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
 
-  <body>
-   
+  <title>Color-Run</title>
+</head>
+
+<body>
+
 
 
   <div id="playfield">
-
     <h1 id="heading"><a>Color Run</a></h1>
+    <div class="right-half">
+      <div class="game-btn"><a id="start-button" href="#"> New Game</a></div>
+      <div class="game-btn" id="stop-button"><a href="#"> Back</a></div>
+      <div><img id="img-controls" src="images/arrow-key.png"> </div>
+      <!-- <div class="game-btn"><a href="#" id="player-btn"> Players</a></div> -->
+      <div id="timerSec"></div>
+      <div id="timerText"></div>
+      <!-- <input type="text" placeholder= "How many Players?" name="Players" class="game-btn" id="input-player"> -->
 
 
-  <div class="right-half">
-      <div class="game-btn" ><a id="start-button" href="#"> New Game</a></div>
-      <div class="game-btn" id="stop-button" ><a  href="#"> Back</a></div>
-      <div><img id="img-controls" src="images/arrow-key.png">  </div>
-  <!-- <div class="game-btn"><a href="#" id="player-btn"> Players</a></div> -->
-  <div id="timerSec"></div>
-  <div id="timerText"></div>
-<!-- <input type="text" placeholder= "How many Players?" name="Players" class="game-btn" id="input-player"> -->
-
-
-</div>
+    </div>
 
   </div>
 
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/background.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/brick.js"></script>
-    <script src="js/main.js"></script> 
-  </body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="js/background.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/brick.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
 </html>

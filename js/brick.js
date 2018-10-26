@@ -10,6 +10,7 @@ class Brick{
   }
   draw() {
     this.ctx.save();
+    this.ctx.globalAlpha=1;
     this.ctx.fillStyle = this.color
     this.ctx.shadowBlur = 5;
     this.ctx.shadowColor = "black";
