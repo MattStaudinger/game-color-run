@@ -83,9 +83,6 @@ document.onkeydown = event => {
     case "ArrowLeft":
       p1.movement = "left";
       break;
-    case "Enter":
-      startGame();
-      break;
   }
 };
 
@@ -94,8 +91,6 @@ document.onkeyup = event => {
   switch (event.key) {
     case "ArrowRight":
     case "ArrowLeft":
-    case "ArrowTop":
-    case "ArrowDown":
       p1.movement = null;
       break;
   }
