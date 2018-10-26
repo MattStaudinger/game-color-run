@@ -66,7 +66,6 @@ class Player {
       //check for Game-Stop
       if (this.y - this.radius / 2 < 0) {
         this.stop = true;
-        console.log(this.isFalling)
       }
     }
   }
@@ -84,6 +83,7 @@ class Player {
     this.isFalling = false;
     this.fallingCounter = 0;
     this.delta = 1;
+    this.friction = 0.9;
   }
 
   
@@ -91,6 +91,7 @@ class Player {
   update() {
     this.checkBoundaries();
     this.speedX = 0;
+
     switch (this.movement) {
       case "right":
         this.delta = 1;
