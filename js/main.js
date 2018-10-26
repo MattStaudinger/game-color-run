@@ -2,11 +2,10 @@ var canvas = document.createElement("canvas");
 ctx = canvas.getContext("2d");
 var timer = document.getElementById("timerSec");
 var timerText = document.getElementById("timerText");
-var startButton = document.getElementById("start-button");
-// var playerButton = document.getElementById("player-btn");
+var startButton = document.querySelector(".start-button");
 var playerButton = document.getElementById("player-btn");
 var stopButton = document.getElementById("stop-button");
-var inputForm = document.getElementById("input-player")
+playField = document.getElementById("playfield")
 canvas.setAttribute("width", "1200");
 canvas.setAttribute("height", "800");
 var width = canvas.width;
@@ -26,6 +25,10 @@ var level = 1;
 var intervalID;
 var playerAmount = 1;
 var isNewDate = true;
+var countDown = secondsUntilNewLevel;
+var isNewLevel = false;
+var score = 0;
+var gameOver = document.getElementById("game-over");
 
 //var enemies = [];
 
@@ -51,51 +54,46 @@ function resetEverything() {
   currentInterval = 0;
   level = 1;
   playerAmount = 1;
-  isNewDate = true;
+  score = 0;
 
-
+  countDown = secondsUntilNewLevel;
 }
-
 
 // playerButton.onclick = function() {
 //   playerButton.parentElement.style.display = "none"
-//   inputForm.style.display = "block"  
-
+//   inputForm.style.display = "block"
 
 // }
 
 startButton.onclick = function() {
   // var playerAmount = inputForm.value;
 
-
   if (!gameStop) {
     resetEverything();
     gameStop = true;
-  
   }
 
   if (gameStop) {
-    startButton.style.display = "block";
+    playField.style.display = "flex"
     startGame();
     gameStop = false;
-    
   }
 };
 
 stopButton.onclick = function() {
   window.location.reload(true);
-}
+};
 
 function startGame() {
-  stopButton.style.display = "block"
-  startButton.parentElement.style.display = "none";
+  stopButton.style.display = "block";
+  startButton.style.display = "none";
   // playerButton.parentElement.style.display = "none";
   timer.style.display = "block";
   timerText.style.display = "block";
   document.getElementById("playfield").style.flexDirection = "row";
   document.getElementById("heading").style.display = "none";
   document.getElementById("playfield").append(canvas);
-  document.getElementById("img-controls").style.display = "none"
+  document.getElementById("img-controls").style.display = "none";
   scrollAmount = 300;
   obstacleCreation(canvasHeight / 2);
   scrollAmount = 300;
@@ -103,43 +101,43 @@ function startGame() {
   scrollAmount = 300;
   obstacleCreation((canvasHeight / 4) * 3 + 200);
   var mainDate = new Date();
-  var dateStaticForCountdownInterval = new Date();
-  var secondsInterval
   intervalID = setInterval(() => {
     update();
     drawEverything();
+
     if (p1.stop) {
       clearInterval(intervalID);
       gameStop = false;
-      startButton.parentElement.style.display = "block";
+       startButton.style.display = "block";
+      gameOver.append(startButton)
+
+      gameOver.style.display = "flex"
+      playField.style.display = "none"
+      document.querySelector(".score-text").innerText = "Your distance was " + parseInt(score / 10) + " m"
       p1.stop = false;
     }
 
     var dateInterval = new Date();
-   // isNewDate ?  dateInterval.setSeconds(0) : isNewDate = false;
-    var dateIntervalForCountdown = new Date();
 
-    //Changing color of Button
-    if (
-      secondsUntilNewLevel +
-        dateStaticForCountdownInterval.getSeconds() -
-        dateIntervalForCountdown.getSeconds() +
-        2 ===
-      secondsUntilNewLevel
-    )
-      timerText.style.backgroundColor = "rgba(159, 188, 169, 0.527)";
+    // Changing color of Button
+    if (countDown === 0) timerText.style.backgroundColor = "#E4847F";
 
+    if (countDown === secondsUntilNewLevel)
+      timerText.style.backgroundColor = "rgba(159, 188, 169, 0)";
 
-    if (
-      secondsUntilNewLevel +
-        dateStaticForCountdownInterval.getSeconds() -
-        dateIntervalForCountdown.getSeconds() ===
-      0
-    ) {
-      dateStaticForCountdownInterval = new Date();
-      dateIntervalForCountdown = new Date();
+    countDown =
+      secondsUntilNewLevel -
+      (dateInterval.getSeconds() % (secondsUntilNewLevel + 1));
+
+    if (countDown === 0 && !isNewLevel) {
       bg.speed += 0.4;
       level++;
+      countDown = secondsUntilNewLevel;
+      isNewLevel = true;
+    }
+
+    if (countDown === 1 && isNewLevel) {
+      isNewLevel = false;
     }
 
     timerText.innerHTML =
@@ -148,22 +146,17 @@ function startGame() {
       "</h2>" +
       "<br></br>" +
       "Time until next Level: " +
-      twoDigitsNumber(
-        secondsUntilNewLevel +
-          dateStaticForCountdownInterval.getSeconds() -
-          dateIntervalForCountdown.getSeconds()
-      ) +
+      twoDigitsNumber(countDown) +
       " s";
 
-    timer.innerText = "TOTAL TIME "+ convertToMinutesAndSeconds(
-      dateInterval.getSeconds()  - mainDate.getSeconds()
-    );
+    timer.innerText = "Score:   " + parseInt(score / 10) + " m";
   }, 1000 / 100);
 }
 
-function convertToMinutesAndSeconds(time) {
-  minutes = parseInt(time / 60);
-  seconds = time % 60;
+function convertToMinutesAndSeconds(timeRelative, timeFix) {
+  console.log(timeRelative, timeFix, timeRelative - timeFix);
+  minutes = parseInt((timeRelative - timeFix) / 60);
+  seconds = (timeRelative - timeFix) % 60;
   return twoDigitsNumber(minutes) + ":" + twoDigitsNumber(seconds);
 }
 
@@ -188,6 +181,7 @@ function update() {
   if (p1.y > canvasHeight * 0.7) {
     moveTheCamera(6);
   }
+  score += bg.speed;
 }
 
 function moveTheCamera(amount) {
@@ -209,7 +203,7 @@ function drawEverything() {
 }
 
 document.onkeydown = event => {
-   event.preventDefault();
+  event.preventDefault();
   switch (event.key) {
     case "ArrowRight":
       p1.movement = "right";
@@ -250,7 +244,6 @@ function obstacleCreation(obstacleY) {
     isNewLine = true;
     scrollAmount = 0;
   } else isNewLine = false;
-
 
   //old lines will be deleted
   obstacles.forEach(el => {
