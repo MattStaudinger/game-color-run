@@ -7,7 +7,7 @@ class Player {
     this.y = this.ctx.canvas.height / 2 - this.radius;
     this.movement = null;
     this.speedX = 0;
-    this.speedY = -bg.speed;
+    this.speedY = -speedGlobal;
     this.friction = 0.9;
     this.width = this.ctx.canvas.width;
     this.color = "#2C8693";
@@ -51,7 +51,7 @@ class Player {
             this.fallingCounter = 0;
           }
          
-          this.speedY = -bg.speed;
+          this.speedY = -speedGlobal;
           if (this.isFalling) this.speedY = 4;
           break;
 
@@ -76,7 +76,7 @@ class Player {
     this.y = this.ctx.canvas.height / 2 - this.radius + 2;
     this.movement = null;
     this.speedX = 0;
-    this.speedY = -bg.speed;
+    this.speedY = -speedGlobal;
     this.width = this.ctx.canvas.width;
     this.color = "#2C8693";
     this.stop = false;

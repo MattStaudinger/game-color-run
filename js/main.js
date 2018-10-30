@@ -27,23 +27,19 @@ var intervalID;
 var countDown = secondsUntilNewLevel;
 var isNewLevel = false;
 var score = 0;
+var speedGlobal = 0.75
 
-//var enemies = [];
-
-var bg = new Background(ctx, "./images/bg09.jpg");
 var p1 = new Player(ctx);
 gameStop = true;
 
 function resetEverything() {
   ctx.clearRect(0, 0, width, canvasHeight);
   p1.reset();
-  bg.reset();
   obstacles = [];
   scrollAmount = 0;
   secondsUntilNewLevel = 6;
   brickHeight = 30;
   gameStop = true;
-  bg.speed = 0.75;
   seconds = 0;
   minutes = 0;
   milSec = 0;
@@ -54,6 +50,8 @@ function resetEverything() {
   score = 0;
   isNewLevel = false;
   countDown = secondsUntilNewLevel;
+speedGlobal = 0.75
+
 }
 
 
@@ -146,7 +144,7 @@ function startGame() {
     (dateInterval.getSeconds() % (secondsUntilNewLevel + 1));
 
     if (countDown === 0 && !isNewLevel) {
-      bg.speed += 0.4;
+      speedGlobal += 0.4;
       level++;
       countDown = secondsUntilNewLevel;
       isNewLevel = true;
@@ -177,7 +175,7 @@ function twoDigitsNumber(value) {
 
 function update() {
   obstacleCreation(canvasHeight);
-  scrollAmount += bg.speed;
+  scrollAmount += speedGlobal;
   obstacles.forEach(el => {
     el.update();
   });
@@ -185,12 +183,11 @@ function update() {
   if (p1.y > canvasHeight * 0.7) {
     moveTheCamera(6);
   }
-  score += bg.speed;
+  score += speedGlobal;
 }
 
 function moveTheCamera(amount) {
   p1.y -= amount;
-  bg.y -= amount;
   obstacles.forEach(el => {
     el.y -= amount;
   });

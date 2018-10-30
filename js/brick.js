@@ -6,7 +6,6 @@ class Brick{
     this.height = height;
     this.width = width;
     this.color = color;
-    this.speed = bg.speed;
   }
   draw() {
     this.ctx.save();
@@ -22,6 +21,6 @@ class Brick{
 
   }
   update() {
-    this.y -= bg.speed // speed of all bricks
+    this.y -= speedGlobal // speed of all bricks
   }
 }
